@@ -7,7 +7,7 @@
     "check-types": "tsc --noEmit --incremental",
     "dev": "next dev",
     "format": "prettier --write . '!(node_modules|.next)/**/*'",
-    "ipfs": "NEXT_PUBLIC_IPFS_BUILD=true yarn build && yarn bgipfs upload config init -u https://upload.bgipfs.com && CID=$(yarn bgipfs upload out | grep -o 'CID: [^ ]*' | cut -d' ' -f2) && [ ! -z \"$CID\" ] && echo '🚀 Upload complete! Your site is now available at: https://community.bgipfs.com/ipfs/'$CID || echo '❌ Upload failed'",
+    "ipfs": "NEXT_PUBLIC_IPFS_BUILD=true yarn build && yarn bgipfs upload config init -u https://upload.bgipfs.com && CID=$(yarn bgipfs upload out | grep -o 'CID: [^ ]*' | cut -d' ' -f2) && [ ! -z \"$CID\" ] && echo '\ud83d\ude80 Upload complete! Your site is now available at: https://community.bgipfs.com/ipfs/'$CID || echo '\u274c Upload failed'",
     "lint": "yarn eslint .",
     "serve": "next start",
     "start": "next dev",
@@ -57,5 +57,8 @@
     "typescript": "~5.8.2",
     "vercel": "~52.0.0"
   },
-  "packageManager": "yarn@4.13.0"
+  "packageManager": "yarn@4.13.0",
+  "resolutions": {
+    "@coinbase/cdp-sdk": "1.52.0"
+  }
 }

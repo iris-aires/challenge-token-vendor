@@ -76,3 +76,11 @@ yarn deploy --network sepolia
 ```
 
 If needed, override the multiplier with `DEPLOY_GAS_MULTIPLIER=1200 yarn deploy --network sepolia`. Confirm that both contract creation receipts succeeded before using their addresses. Calls to an address without contract code may still return a successful receipt, so successful transfer or ownership transactions alone do not prove deployment succeeded.
+
+## Vercel monorepo deployment
+
+Set the Vercel project's Root Directory to `packages/nextjs` and enable **Include source files outside of the Root Directory in the Build Step**. The `yarn vercel` command uploads the repository root so the build receives the root `yarn.lock`, `.yarnrc.yml`, and dependency resolutions. `packages/nextjs/vercel.json` installs with `--immutable` and builds the Next.js workspace. Do not run a root-directory deployment with a Next.js Root Directory of `.`: the root package does not depend on Next.js.
+
+```bash
+yarn vercel --prod
+```

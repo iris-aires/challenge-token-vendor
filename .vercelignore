@@ -1,0 +1,17 @@
+# Upload the workspace and lockfile, excluding local credentials and generated files.
+.env
+.env.*
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules/**
+**/.next/**
+**/cache/**
+**/broadcast/**
+**/out/**
+packages/foundry/lib/**
+.git/**
+.ai/**
+.claude/**
+.cursor/**
+.agents/**

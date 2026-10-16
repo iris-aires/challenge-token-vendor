@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { hardhat } from "viem/chains";
 import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
 import { BoltIcon, CircleStackIcon } from "@heroicons/react/24/outline";
+import { SwitchTheme } from "~~/components/SwitchTheme";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
 
@@ -50,9 +50,10 @@ export const HeaderMenuLinks = () => {
             <Link
               href={href}
               passHref
+              aria-current={isActive ? "page" : undefined}
               className={`${
-                isActive ? "bg-base-300" : ""
-              } hover:bg-base-300 focus:!bg-base-300 h-full px-4 text-sm gap-2 flex items-center whitespace-nowrap`}
+                isActive ? "nav-active" : ""
+              } nav-link h-full px-4 text-sm gap-2 flex items-center whitespace-nowrap`}
             >
               {icon}
               <span>{label}</span>
@@ -77,10 +78,10 @@ export const Header = () => {
   });
 
   return (
-    <div className="sticky lg:static top-0 navbar bg-base-100 min-h-16 shrink-0 justify-between z-20 border-b-2 border-base-300 p-0 sm:px-2">
+    <div className="site-header sticky top-0 navbar min-h-20 shrink-0 justify-between z-20">
       <div className="navbar-start w-auto self-stretch">
         <details className="dropdown" ref={burgerMenuRef}>
-          <summary className="ml-1 btn btn-ghost lg:hidden hover:bg-transparent">
+          <summary aria-label="Open navigation" className="btn btn-ghost lg:hidden hover:bg-transparent">
             <Bars3Icon className="h-1/2" />
           </summary>
           <ul
@@ -92,21 +93,22 @@ export const Header = () => {
             <HeaderMenuLinks />
           </ul>
         </details>
-        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
-          <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-bold leading-tight">SRE Challenges</span>
-            <span className="text-xs">Token Vendor</span>
-          </div>
+        <Link href="/" className="brand flex items-center gap-2.5 mr-6 shrink-0" aria-label="Token Vendor home">
+          <span className="brand-mark">
+            <CircleStackIcon className="h-6 w-6" />
+          </span>
+          <span className="hidden sm:block font-semibold tracking-tight">
+            Token Vendor
+            <span className="block text-[10px] tracking-[0.2em] uppercase opacity-50">Onchain exchange</span>
+          </span>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap h-full m-0 p-0 list-none">
           <HeaderMenuLinks />
         </ul>
       </div>
-      <div className="navbar-end grow mr-4">
+      <div className="navbar-end w-auto gap-2 sm:gap-3">
         <RainbowKitCustomConnectButton />
+        <SwitchTheme />
         {isLocalNetwork && <FaucetButton />}
       </div>
     </div>

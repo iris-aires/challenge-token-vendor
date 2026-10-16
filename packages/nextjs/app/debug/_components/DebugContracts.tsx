@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo } from "react";
 import { ContractUI } from "./ContractUI";
+import styles from "./DebugContracts.module.css";
 import "@scaffold-ui/debug-contracts/styles.css";
 import { useSessionStorage } from "usehooks-ts";
 import { BarsArrowUpIcon } from "@heroicons/react/20/solid";
@@ -14,9 +15,9 @@ export function DebugContracts() {
   const contractsData = useAllContracts();
   const contractNames = useMemo(
     () =>
-      Object.keys(contractsData).sort((a, b) => {
-        return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
-      }) as ContractName[],
+      Object.keys(contractsData)
+        .filter(name => name === "Lumen" || name === "Vendor")
+        .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })) as ContractName[],
     [contractsData],
   );
 
@@ -33,7 +34,9 @@ export function DebugContracts() {
   }, [contractNames, selectedContract, setSelectedContract]);
 
   return (
-    <div className="flex flex-col gap-y-6 lg:gap-y-8 py-8 lg:py-12 justify-center items-center">
+    <div
+      className={`${styles.debugContracts} flex flex-col gap-y-6 lg:gap-y-8 py-8 lg:py-12 justify-center items-center`}
+    >
       {contractNames.length === 0 ? (
         <p className="text-3xl mt-14">No contracts found!</p>
       ) : (

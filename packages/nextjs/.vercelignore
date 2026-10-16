@@ -1,0 +1,10 @@
+# Keep local credentials and generated build/deployment files out of uploads.
+.env
+.env.*
+**/.env
+**/.env.*
+**/node_modules/**
+**/.next/**
+**/cache/**
+**/broadcast/**
+**/out/**

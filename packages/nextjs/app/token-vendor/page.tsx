@@ -18,62 +18,83 @@ const TokenVendor: NextPage = () => {
   const [tokensToSell, setTokensToSell] = useState<string>("");
 
   const { address } = useAccount();
-  const { data: yourTokenSymbol } = useScaffoldReadContract({
-    contractName: "YourToken",
+  const { data: lumenSymbol } = useScaffoldReadContract({
+    contractName: "Lumen",
     functionName: "symbol",
   });
 
-  const { data: yourTokenBalance } = useScaffoldReadContract({
-    contractName: "YourToken",
+  const { data: lumenBalance } = useScaffoldReadContract({
+    contractName: "Lumen",
     functionName: "balanceOf",
     args: [address],
   });
 
   const { data: vendorContractData } = useDeployedContractInfo({ contractName: "Vendor" });
   const { writeContractAsync: writeVendorAsync } = useScaffoldWriteContract({ contractName: "Vendor" });
-  const { writeContractAsync: writeYourTokenAsync } = useScaffoldWriteContract({ contractName: "YourToken" });
+  const { writeContractAsync: writeLumenAsync } = useScaffoldWriteContract({ contractName: "Lumen" });
 
-  // const { data: vendorTokenBalance } = useScaffoldReadContract({
-  //   contractName: "YourToken",
-  //   functionName: "balanceOf",
-  //   args: [vendorContractData?.address],
-  // });
+  const { data: vendorTokenBalance } = useScaffoldReadContract({
+    contractName: "Lumen",
+    functionName: "balanceOf",
+    args: [vendorContractData?.address],
+  });
 
-  // const { data: vendorEthBalance } = useWatchBalance({ address: vendorContractData?.address });
+  const { data: vendorEthBalance } = useWatchBalance({ address: vendorContractData?.address });
 
-  // const { data: tokensPerEth } = useScaffoldReadContract({
-  //   contractName: "Vendor",
-  //   functionName: "tokensPerEth",
-  // });
+  const { data: tokensPerEth } = useScaffoldReadContract({
+    contractName: "Vendor",
+    functionName: "tokensPerEth",
+  });
 
   return (
     <>
-      <div className="flex items-center flex-col flex-grow pt-10">
-        <div className="flex flex-col items-center bg-base-100 shadow-lg shadow-secondary border-8 border-secondary p-6 mt-24 w-full max-w-lg">
-          <div className="text-xl">
+      <div className="page-shell vendor-page flex flex-col flex-grow">
+        <header className="page-heading">
+          <span className="eyebrow">YOUR ONCHAIN EXCHANGE</span>
+          <h1>
+            Token Vendor<span className="text-primary">.</span>
+          </h1>
+          <p>Manage your Lumen tokens, directly from your wallet.</p>
+        </header>
+        <div className="vendor-balance panel flex flex-col p-8 w-full">
+          <div className="eyebrow mb-4">WALLET BALANCE</div>
+          <div className="text-lg">
             Your token balance:{" "}
-            <div className="inline-flex items-center justify-center">
-              {parseFloat(formatEther(yourTokenBalance || 0n)).toFixed(4)}
-              <span className="font-bold ml-1">{yourTokenSymbol}</span>
+            <div className="inline-flex items-center justify-center tabular-nums">
+              {parseFloat(formatEther(lumenBalance || 0n)).toFixed(4)}
+              <span className="font-bold ml-1">{lumenSymbol}</span>
             </div>
           </div>
           {/* Vendor Balances */}
-          {/* <hr className="w-full border-secondary my-3" />
+          <hr className="w-full border-secondary my-3" />
           <div>
             Vendor token balance:{" "}
-            <div className="inline-flex items-center justify-center">
+            <div className="inline-flex items-center justify-center tabular-nums">
               {Number(formatEther(vendorTokenBalance || 0n)).toFixed(4)}
-              <span className="font-bold ml-1">{yourTokenSymbol}</span>
+              <span className="font-bold ml-1">{lumenSymbol}</span>
             </div>
           </div>
           <div>
             Vendor eth balance: {Number(formatEther(vendorEthBalance?.value || 0n)).toFixed(4)}
             <span className="font-bold ml-1">ETH</span>
-          </div> */}
+          </div>
         </div>
 
+        {!address && (
+          <div className="panel p-8 mt-6">
+            <h2 className="text-xl">Your wallet is the starting point.</h2>
+            <p className="muted mb-0">Connect your wallet using the button above to view your token balance.</p>
+          </div>
+        )}
+        {address && !lumenBalance && (
+          <div className="panel p-8 mt-6">
+            <h2 className="text-xl">Your Lumen balance will appear here.</h2>
+            <p className="muted mb-0">Once you hold tokens, you can transfer them to another wallet.</p>
+          </div>
+        )}
+
         {/* Buy Tokens */}
-        {/* <div className="flex flex-col items-center space-y-4 bg-base-100 shadow-lg shadow-secondary border-8 border-secondary p-6 mt-8 w-full max-w-lg">
+        <div className="panel flex flex-col space-y-4 p-6 sm:p-8 mt-6 w-full">
           <div className="text-xl">Buy tokens</div>
           <div>{tokensPerEth?.toString() || 0} tokens per ETH</div>
 
@@ -98,11 +119,14 @@ const TokenVendor: NextPage = () => {
           >
             Buy Tokens
           </button>
-        </div> */}
+        </div>
 
-        {!!yourTokenBalance && (
-          <div className="flex flex-col items-center space-y-4 bg-base-100 shadow-lg shadow-secondary border-8 border-secondary p-6 mt-8 w-full max-w-lg">
-            <div className="text-xl">Transfer tokens</div>
+        {!!lumenBalance && (
+          <div className="panel flex flex-col space-y-4 p-6 sm:p-8 mt-6 w-full">
+            <div>
+              <h2 className="text-2xl">Transfer tokens</h2>
+              <p className="muted text-sm">Send Lumen to another Ethereum wallet.</p>
+            </div>
             <div className="w-full flex flex-col space-y-2">
               <AddressInput placeholder="to address" value={toAddress} onChange={value => setToAddress(value)} />
               <IntegerInput
@@ -114,10 +138,10 @@ const TokenVendor: NextPage = () => {
             </div>
 
             <button
-              className="btn btn-secondary"
+              className="btn btn-primary"
               onClick={async () => {
                 try {
-                  await writeYourTokenAsync({
+                  await writeLumenAsync({
                     functionName: "transfer",
                     args: [toAddress, multiplyTo1e18(tokensToSend)],
                   });
@@ -132,8 +156,8 @@ const TokenVendor: NextPage = () => {
         )}
 
         {/* Sell Tokens */}
-        {/* {!!yourTokenBalance && (
-          <div className="flex flex-col items-center space-y-4 bg-base-100 shadow-lg shadow-secondary border-8 border-secondary p-6 mt-8 w-full max-w-lg">
+        {/* {!!lumenBalance && (
+          <div className="panel flex flex-col space-y-4 p-6 sm:p-8 mt-6 w-full">
             <div className="text-xl">Sell tokens</div>
             <div>{tokensPerEth?.toString() || 0} tokens per ETH</div>
 
@@ -152,7 +176,7 @@ const TokenVendor: NextPage = () => {
                 className={`btn ${isApproved ? "btn-disabled" : "btn-secondary"}`}
                 onClick={async () => {
                   try {
-                    await writeYourTokenAsync({
+                    await writeLumenAsync({
                       functionName: "approve",
                       args: [vendorContractData?.address, multiplyTo1e18(tokensToSell)],
                     });

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import "./DeployHelpers.s.sol";
-import { DeployYourToken } from "./DeployYourToken.s.sol";
+import { DeployLumen } from "./DeployLumen.s.sol";
 
 /**
  * @notice Main deployment script for all contracts
@@ -15,8 +15,8 @@ contract DeployScript is ScaffoldETHDeploy {
         // Deploys all your contracts sequentially
         // Add new deployments here when needed
 
-        DeployYourToken deployYourToken = new DeployYourToken();
-        deployYourToken.run();
+        DeployLumen deployLumen = new DeployLumen();
+        deployLumen.run();
 
         // Deploy another contract
         // DeployMyContract myContract = new DeployMyContract();

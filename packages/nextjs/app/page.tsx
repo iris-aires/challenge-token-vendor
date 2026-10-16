@@ -1,11 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Address } from "@scaffold-ui/components";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownLeftIcon,
+  ArrowTopRightOnSquareIcon,
+  ArrowsRightLeftIcon,
+  BoltIcon,
+  ShieldCheckIcon,
+} from "@heroicons/react/24/outline";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
@@ -13,81 +18,91 @@ const Home: NextPage = () => {
   const { targetNetwork } = useTargetNetwork();
 
   return (
-    <>
-      <div className="flex items-center flex-col grow pt-10">
-        <div className="px-5">
-          <h1 className="text-center">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
-            <span className="block text-xl font-bold">(Speedrun Ethereum Challenge: Token Vendor extension)</span>
-          </h1>
-          <div className="flex justify-center items-center space-x-2 flex-col">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address address={connectedAddress} chain={targetNetwork} />
-          </div>
-
-          <div className="flex items-center flex-col flex-grow pt-10">
-            <div className="px-5">
-              <h1 className="text-center mb-6">
-                <span className="block text-2xl mb-2">Speedrun Ethereum</span>
-                <span className="block text-4xl font-bold">Challenge: 🏵 Token Vendor 🤖</span>
-              </h1>
-              <div className="flex flex-col items-center justify-center">
-                <Image
-                  src="/hero.png"
-                  width="727"
-                  height="231"
-                  alt="challenge banner"
-                  className="border-4 border-primary"
-                />
-                <div className="max-w-3xl">
-                  <p className="text-center text-lg mt-8">
-                    🤖 Smart contracts are kind of like &quot;always on&quot; vending machines that anyone can access.
-                    Let&apos;s make a decentralized, digital currency. Then, let&apos;s build an unstoppable vending
-                    machine that will buy and sell the currency. We&apos;ll learn about the &quot;approve&quot; pattern
-                    for ERC20s and how contract to contract interactions work.
-                  </p>
-                  <p className="text-center text-lg">
-                    🌟 The final deliverable is an app that lets users purchase your ERC20 token, transfer it, and sell
-                    it back to the vendor. Deploy your contracts on your public chain of choice and then deploy your app
-                    to a public webserver. Submit the url on{" "}
-                    <a href="https://speedrunethereum.com/" target="_blank" rel="noreferrer" className="underline">
-                      SpeedrunEthereum.com
-                    </a>{" "}
-                    !
-                  </p>
-                </div>
-              </div>
-            </div>
+    <div className="home-page page-shell">
+      <section className="hero-section">
+        <div className="hero-glow" aria-hidden="true" />
+        <div className="eyebrow">
+          <span className="status-dot" /> THE ONCHAIN TOKEN EXPERIENCE
+        </div>
+        <h1>
+          Your tokens.
+          <br />
+          Your wallet.
+          <br />
+          <span className="text-primary">Your control.</span>
+        </h1>
+        <div className="hero-bottom">
+          <Link href="/token-vendor" className="btn btn-primary hero-cta">
+            Open exchange <ArrowTopRightOnSquareIcon className="h-5 w-5" />
+          </Link>
+          <p>
+            A simple gateway to Lumen.
+            <br />
+            Explore ERC-20 tokens directly from your wallet.
+          </p>
+          <div className="hero-network">
+            <span className="muted text-xs">CONNECTED NETWORK</span>
+            <span className="flex items-center gap-2 mt-2">
+              <span className="status-dot" />
+              {targetNetwork.name}
+            </span>
           </div>
         </div>
+      </section>
 
-        <div className="grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div className="flex justify-center items-center gap-12 flex-col md:flex-row">
-            <div className="flex flex-col bg-base-100 border border-base-300 px-10 py-10 text-center items-center max-w-xs">
-              <BugAntIcon className="h-8 w-8" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contracts
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-100 border border-base-300 px-10 py-10 text-center items-center max-w-xs">
-              <MagnifyingGlassIcon className="h-8 w-8" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
+      <section className="feature-grid" aria-label="How Token Vendor works">
+        <Link href="/token-vendor" className="feature-card">
+          <span className="feature-icon">
+            <ArrowsRightLeftIcon />
+          </span>
+          <span className="eyebrow">DIRECT FROM YOUR WALLET</span>
+          <h2>Make your next move.</h2>
+          <p>View your Lumen balance and send tokens to any Ethereum address.</p>
+          <span className="feature-link">
+            Explore Token Vendor <ArrowTopRightOnSquareIcon />
+          </span>
+        </Link>
+        <Link href="/events" className="feature-card">
+          <span className="feature-icon">
+            <BoltIcon />
+          </span>
+          <span className="eyebrow">TRANSPARENT BY DESIGN</span>
+          <h2>Every trade. Onchain.</h2>
+          <p>Follow token purchases with a public record of exchange activity.</p>
+          <span className="feature-link">
+            View activity <ArrowTopRightOnSquareIcon />
+          </span>
+        </Link>
+        <Link href="/debug" className="feature-card">
+          <span className="feature-icon">
+            <ShieldCheckIcon />
+          </span>
+          <span className="eyebrow">POWERED BY SMART CONTRACTS</span>
+          <h2>Verify it yourself.</h2>
+          <p>Inspect the token and vendor contracts. The code is open to explore.</p>
+          <span className="feature-link">
+            Explore contracts <ArrowTopRightOnSquareIcon />
+          </span>
+        </Link>
+      </section>
+
+      <section className="account-strip">
+        <div className="flex items-center gap-3">
+          <ArrowDownLeftIcon className="h-5 w-5 text-primary" />
+          <div>
+            <span className="eyebrow">YOUR ACCOUNT</span>
+            <p className="m-0 text-sm muted">
+              {connectedAddress ? "Connected and ready to explore." : "Connect a wallet to get started."}
+            </p>
           </div>
         </div>
-      </div>
-    </>
+        {connectedAddress ? (
+          <Address address={connectedAddress} chain={targetNetwork} />
+        ) : (
+          <span className="badge badge-outline">Wallet not connected</span>
+        )}
+      </section>
+    </div>
   );
 };
 

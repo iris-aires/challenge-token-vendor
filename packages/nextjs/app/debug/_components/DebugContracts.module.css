@@ -1,0 +1,47 @@
+/* Use quiet surfaces and borders in the debugger without affecting the light theme. */
+:global(html[data-theme="dark"]) .debugContracts [class~="dark:bg-sui-primary"] {
+  background-color: #1c1d2a;
+}
+
+:global(html[data-theme="dark"]) .debugContracts [class~="dark:border-sui-primary"] {
+  border-color: #303142;
+}
+
+:global(html[data-theme="dark"]) .debugContracts [class*="shadow-"] {
+  box-shadow: none;
+}
+
+/* Replace the library's raw token variables while keeping its method forms intact. */
+.lumenContract {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+  width: 100%;
+  max-width: 80rem;
+  padding: 0 1.5rem;
+}
+
+.lumenContract > :global(.grid),
+.lumenContract > :global(.grid) > :global(.col-span-5) {
+  display: contents;
+}
+
+.lumenContract > :global(.grid) > :global(.col-span-5) > :first-child {
+  display: none;
+}
+
+.lumenContract > :global(.grid) > :global(.col-span-5) > :last-child {
+  grid-column: auto;
+}
+
+@media (min-width: 1024px) {
+  .lumenContract {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem;
+    padding: 0 2.5rem;
+  }
+
+  .lumenContract > :global(.grid) > :global(.col-span-5) > :last-child {
+    grid-column: span 2;
+  }
+}

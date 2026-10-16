@@ -1,191 +1,459 @@
 @import "tailwindcss";
-
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
 @theme {
   --shadow-center: 0 0 12px -2px rgb(0 0 0 / 0.05);
   --animate-pulse-fast: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
-
 @plugin "daisyui" {
   themes:
     light,
-    dark --prefersdark;
+    dark --default;
 }
-
 @plugin "daisyui/theme" {
   name: "light";
-
-  --color-primary: #93bbfb;
-  --color-primary-content: #212638;
-  --color-secondary: #dae8ff;
-  --color-secondary-content: #212638;
-  --color-accent: #93bbfb;
-  --color-accent-content: #212638;
-  --color-neutral: #212638;
+  --color-primary: #3d42ff;
+  --color-primary-content: #ffffff;
+  --color-secondary: #e9eaf5;
+  --color-secondary-content: #202239;
+  --color-accent: #494dce;
+  --color-accent-content: #ffffff;
+  --color-neutral: #202239;
   --color-neutral-content: #ffffff;
   --color-base-100: #ffffff;
-  --color-base-200: #f4f8ff;
-  --color-base-300: #dae8ff;
-  --color-base-content: #212638;
-  --color-info: #93bbfb;
-  --color-success: #34eeb6;
-  --color-warning: #ffcf72;
-  --color-error: #ff8863;
-
-  --radius-field: 0rem;
-  --radius-box: 0rem;
-  --radius-selector: 0rem;
-
+  --color-base-200: #f7f8fc;
+  --color-base-300: #e1e3ee;
+  --color-base-content: #202239;
+  --color-info: #5156db;
+  --color-success: #168765;
+  --color-warning: #a87612;
+  --color-error: #d94161;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --radius-selector: 0.5rem;
   --tt-tailw: 6px;
 }
-
 @plugin "daisyui/theme" {
   name: "dark";
-
-  --color-primary: #212638;
-  --color-primary-content: #f9fbff;
-  --color-secondary: #323f61;
-  --color-secondary-content: #f9fbff;
-  --color-accent: #4969a6;
-  --color-accent-content: #f9fbff;
-  --color-neutral: #f9fbff;
-  --color-neutral-content: #385183;
-  --color-base-100: #385183;
-  --color-base-200: #2a3655;
-  --color-base-300: #212638;
-  --color-base-content: #f9fbff;
-  --color-info: #385183;
-  --color-success: #34eeb6;
-  --color-warning: #ffcf72;
-  --color-error: #ff8863;
-
-  --radius-field: 0rem;
-  --radius-box: 0rem;
-  --radius-selector: 0rem;
-
+  --color-primary: #5559ff;
+  --color-primary-content: #ffffff;
+  --color-secondary: #232336;
+  --color-secondary-content: #eeeef6;
+  --color-accent: #a2a4ff;
+  --color-accent-content: #101018;
+  --color-neutral: #eeeef6;
+  --color-neutral-content: #171722;
+  --color-base-100: #171722;
+  --color-base-200: #0c0d12;
+  --color-base-300: #2b2b40;
+  --color-base-content: #f1f1f6;
+  --color-info: #9b9dff;
+  --color-success: #67d9b1;
+  --color-warning: #edc77c;
+  --color-error: #ff8198;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --radius-selector: 0.5rem;
   --tt-tailw: 6px;
-  --tt-bg: var(--color-primary);
+  --tt-bg: var(--color-base-100);
 }
-
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+@theme inline {
+  --font-space-grotesk: var(--font-space-grotesk);
+}
 @layer base {
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--color-base-300);
   }
-
-  p {
-    margin: 1rem 0;
-  }
-
   body {
     min-height: 100vh;
   }
-
+  p {
+    margin: 1rem 0;
+  }
   h1,
   h2,
   h3,
   h4 {
     margin-bottom: 0.5rem;
-    line-height: 1;
+    line-height: 1.15;
+  }
+  button,
+  a,
+  input,
+  summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
   }
 }
-
 :root,
 [data-theme] {
   background: var(--color-base-200);
 }
-
+body {
+  color: var(--color-base-content);
+}
 .btn {
   box-shadow: none;
+  font-weight: 500;
 }
-
+.btn-primary {
+  border-color: transparent;
+  background: #3d42ff;
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #5156ff;
+}
 .link {
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
 }
-
 .link:hover {
-  opacity: 80%;
+  opacity: 0.8;
 }
-
-/* -- EXTENSION OVERRIDES -- */
-
-@plugin "daisyui/theme" {
-  name: "light";
-
-  --color-primary: #c8f5ff;
-  --color-primary-content: #026262;
-  --color-secondary: #89d7e9;
-  --color-secondary-content: #088484;
-  --color-accent: #026262;
-  --color-accent-content: #e9fbff;
-  --color-neutral: #088484;
-  --color-neutral-content: #f0fcff;
-  --color-base-100: #f0fcff;
-  --color-base-200: #e1faff;
-  --color-base-300: #c8f5ff;
-  --color-base-content: #088484;
-  --color-info: #026262;
-  --color-success: #34eeb6;
-  --color-warning: #ffcf72;
-  --color-error: #ff8863;
-
-  --radius-field: 0rem;
-  --radius-box: 0rem;
-  --radius-selector: 0rem;
-
-  /* tooltip tail width */
-  --tt-tailw: 6px;
+.muted {
+  color: color-mix(in srgb, var(--color-base-content) 62%, transparent);
 }
-
-/* —— DARK THEME —— */
-@plugin "daisyui/theme" {
-  name: "dark";
-
-  --color-primary: #026262;
-  --color-primary-content: #c8f5ff;
-  --color-secondary: #107575;
-  --color-secondary-content: #e9fbff;
-  --color-accent: #c8f5ff;
-  --color-accent-content: #088484;
-  --color-neutral: #e9fbff;
-  --color-neutral-content: #11acac;
-  --color-base-100: #11acac;
-  --color-base-200: #088484;
-  --color-base-300: #026262;
-  --color-base-content: #e9fbff;
-  --color-info: #c8f5ff;
-  --color-success: #34eeb6;
-  --color-warning: #ffcf72;
-  --color-error: #ff8863;
-
-  --radius-field: 0rem;
-  --radius-box: 0rem;
-  --radius-selector: 0rem;
-
-  --tt-tailw: 6px;
-  --tt-bg: var(--color-primary); /* if you need a tooltip bg override */
+.site-header {
+  padding: 0 4%;
+  border-bottom: 1px solid var(--color-base-300);
+  background: color-mix(in srgb, var(--color-base-200) 92%, transparent);
+  backdrop-filter: blur(16px);
 }
-
-@theme inline {
-  --font-space-grotesk: var(--font-space-grotesk);
+.brand {
+  font-size: 19px;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  height: 38px;
+  width: 38px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #6174ff, #3523db);
+  color: white;
+}
+.nav-link {
+  color: color-mix(in srgb, var(--color-base-content) 55%, transparent);
+  position: relative;
+  transition: color 150ms;
+}
+.nav-link:hover,
+.nav-active {
+  color: var(--color-base-content);
+  background: transparent;
+}
+.nav-active::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  background: var(--color-primary);
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+}
+.theme-switch {
+  height: 36px;
+  width: 36px;
+  min-height: 36px;
+  border: 1px solid var(--color-base-300);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.wallet-account {
+  min-height: 36px;
+  height: 36px;
+  border: 1px solid var(--color-base-300);
+  border-radius: 8px;
+  font-size: 12px;
+}
+.wallet-balance {
+  font-variant-numeric: tabular-nums;
+}
+/* Covers custom wallet, RainbowKit, Scaffold Address, ENS, and address input avatars. */
+.account-avatar,
+img[alt$=" avatar" i],
+img[alt*="avatar" i],
+[data-rk] img[src^="data:image"],
+.avatar > div {
+  border-radius: 50% !important;
+  object-fit: cover;
+  overflow: hidden;
+}
+.dropdown-content {
+  border: 1px solid var(--color-base-300);
+  border-radius: 12px;
+}
+.page-shell {
+  width: min(1200px, calc(100% - 64px));
+  margin: 0 auto;
+}
+.hero-section {
+  position: relative;
+  padding-top: 100px;
+  padding-bottom: 66px;
+  isolation: isolate;
+}
+.hero-glow {
+  position: absolute;
+  z-index: -1;
+  top: 10px;
+  right: -10px;
+  width: 65%;
+  height: 560px;
+  background:
+    radial-gradient(ellipse at 65% 40%, #5528e948, transparent 52%),
+    radial-gradient(ellipse at 45% 65%, #2935ff25, transparent 65%);
+  filter: blur(32px);
+  pointer-events: none;
+}
+[data-theme="light"] .hero-glow {
+  opacity: 0.45;
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
+}
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #67d9b1;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.hero-section h1 {
+  font-size: clamp(56px, 6.6vw, 92px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.065em;
+  margin: 34px 0 44px;
+}
+.hero-bottom {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  border-top: 1px solid var(--color-base-300);
+  padding-top: 28px;
+}
+.hero-cta {
+  justify-content: space-between;
+  min-width: 200px;
+  height: 54px;
+}
+.hero-bottom p {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
+  margin: 0;
+  max-width: 260px;
+}
+.hero-network {
+  margin-left: auto;
+  font-size: 15px;
+}
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  background: var(--color-base-100);
+  border: 1px solid var(--color-base-300);
+  border-radius: 16px;
+  transition:
+    border-color 160ms,
+    transform 160ms;
+}
+.feature-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
+}
+.feature-icon {
+  display: grid;
+  place-items: center;
+  height: 44px;
+  width: 44px;
+  background: #3d42ff;
+  color: white;
+  border-radius: 12px;
+  margin-bottom: 26px;
+}
+.feature-icon svg {
+  width: 23px;
+  height: 23px;
+}
+.feature-card .eyebrow {
+  font-size: 9px;
+}
+.feature-card h2 {
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  margin-top: 12px;
+}
+.feature-card p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
+  margin: 6px 0 28px;
+}
+.feature-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  font-size: 12px;
+}
+.feature-link svg {
+  width: 15px;
+  height: 15px;
+}
+.account-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid var(--color-base-300);
+  padding: 32px 0;
+  margin-top: 48px;
+}
+.site-footer {
+  border-top: 1px solid var(--color-base-300);
+  color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+}
+.page-heading {
+  padding: 64px 0 30px;
+}
+.page-heading h1 {
+  font-size: clamp(36px, 5vw, 52px);
+  letter-spacing: -0.05em;
+  margin-top: 16px;
+  font-weight: 500;
+}
+.page-heading p {
+  color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
+  font-size: 14px;
+}
+.panel {
+  background: var(--color-base-100);
+  border: 1px solid var(--color-base-300);
+  border-radius: 14px;
+}
+.vendor-page {
+  max-width: 720px;
+  padding-bottom: 80px;
+}
+.vendor-balance {
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--color-primary) 12%, var(--color-base-100)),
+    var(--color-base-100)
+  );
+}
+.vendor-balance .tabular-nums {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 40px;
+  font-weight: 500;
+  margin-top: 12px;
+  letter-spacing: -0.04em;
+}
+.vendor-balance .tabular-nums span {
+  font-size: 18px;
+  margin-left: 12px;
+  letter-spacing: 0;
+  color: var(--color-accent);
+}
+.events-page {
+  padding-bottom: 80px;
+}
+.table th {
+  font-weight: 500;
+  color: color-mix(in srgb, var(--color-base-content) 65%, transparent);
+  padding: 20px 24px;
+}
+.table td {
+  padding: 22px 24px;
+}
+@media (max-width: 1023px) {
+  .site-header {
+    padding: 0 20px;
+  }
+  .nav-link {
+    padding: 12px;
+  }
+  .nav-active::after {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  .site-header {
+    min-height: 68px;
+    padding: 0 12px;
+  }
+  .brand {
+    margin-right: 0;
+  }
+  .page-shell {
+    width: calc(100% - 36px);
+  }
+  .hero-section {
+    padding-top: 64px;
+    padding-bottom: 36px;
+  }
+  .hero-section h1 {
+    font-size: 60px;
+  }
+  .hero-glow {
+    width: 100%;
+    height: 400px;
+  }
+  .hero-bottom {
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .hero-network {
+    margin-left: 0;
+  }
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .feature-card {
+    padding: 24px;
+  }
+  .account-strip {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 32px;
+  }
+  .page-heading {
+    padding-top: 42px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
 }
 
 /* Override Scaffold UI theme colors */
 html[data-theme] {
   --color-sui-primary: var(--color-primary);
-  --color-sui-primary-content: var(--color-primary-content);
+  --color-sui-primary-content: var(--color-base-content);
   --color-sui-primary-subtle: var(--color-secondary);
   --color-sui-primary-neutral: var(--color-base-200);
   --color-sui-base-content: var(--color-base-content);

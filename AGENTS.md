@@ -1,16 +1,14 @@
 # AGENTS.md
 
-## What is Speedrun Ethereum?
+## Project Overview
 
-[Speedrun Ethereum](https://speedrunethereum.com/) is a hands-on learning platform where developers learn Solidity and Ethereum development by building real dApps through progressive challenges. Instead of passive tutorials, each challenge teaches a key concept: from tokens and crowdfunding to DEXs, oracles, lending, and zero-knowledge proofs. All challenges use Scaffold-ETH 2 as the development framework. Completed challenges become public portfolio items.
-
-**This extension is one of the Speedrun Ethereum challenges.** It covers **Token Vendor**.
+Token Vendor is a decentralized ERC-20 token exchange built with Scaffold-ETH 2, Next.js, and Foundry.
 
 ## Challenge Overview
 
-The learner builds a decentralized token vending machine: an ERC-20 token (`YourToken`, named "Gold" / "GLD") and a `Vendor` contract that sells and buys back tokens at a fixed exchange rate. The goal is to understand ERC-20 basics, the `approve`/`transferFrom` pattern for token buybacks, and simple access control with `Ownable`.
+The learner builds a decentralized token vending machine: an ERC-20 token (`Lumen`, named "Lumen" / "LUM") and a `Vendor` contract that sells and buys back tokens at a fixed exchange rate. The goal is to understand ERC-20 basics, the `approve`/`transferFrom` pattern for token buybacks, and simple access control with `Ownable`.
 
-The final deliverable: an app that lets users purchase ERC-20 tokens, transfer them, and sell them back to the vendor. Deploy contracts to a testnet, ship the frontend to Vercel, and submit the URL on SpeedRunEthereum.com.
+The final deliverable: an app that lets users purchase ERC-20 tokens, transfer them, and sell them back to the vendor. Deploy contracts to a testnet and ship the frontend to Vercel.
 
 ## Why Token Vending Matters
 
@@ -35,7 +33,7 @@ This project uses **Foundry** as the smart contract framework.
 packages/
   foundry/
     contracts/
-      YourToken.sol          # ERC-20 token (Gold / GLD)
+      Lumen.sol          # ERC-20 token (Lumen / LUM)
       Vendor.sol             # Token vending machine
     script/
       Deploy.s.sol           # Foundry deploy script
@@ -64,7 +62,7 @@ yarn deploy --reset
 
 # Testing (checkpoint-based)
 yarn test                       # Run all challenge tests
-yarn test --match-test "Checkpoint1"  # Test YourToken minting
+yarn test --match-test "Checkpoint1"  # Test Lumen minting
 yarn test --match-test "Checkpoint2"  # Test buyTokens
 yarn test --match-test "Checkpoint3"  # Test withdraw (onlyOwner)
 yarn test --match-test "Checkpoint4"  # Test sellTokens (approve + sell flow)
@@ -90,10 +88,10 @@ yarn vercel --prod  # Redeploy to production URL
 
 ## Smart Contracts
 
-### YourToken.sol
+### Lumen.sol
 
 - **Standard**: ERC-20 (inherits from OpenZeppelin `ERC20`)
-- **Token name/symbol**: "Gold" / "GLD"
+- **Token name/symbol**: "Lumen" / "LUM"
 - **Solidity version**: `0.8.20` (do **not** change, affects grading)
 - **Learner task**: Mint **1000 tokens** (i.e. `1000 * 10**18` base units) to `msg.sender` in the constructor
 - Hint: `1000 ether` in Solidity equals `1000 * 10**18`, which works for ERC-20 tokens with 18 decimals
@@ -101,8 +99,8 @@ yarn vercel --prod  # Redeploy to production URL
 ### Vendor.sol
 
 - **Inherits**: `Ownable` from OpenZeppelin
-- **Holds**: an immutable reference to `YourToken`
-- **Exchange rate**: `tokensPerEth = 100` (learner must define this constant)
+- **Holds**: an immutable reference to `Lumen`
+- **Exchange rate**: `tokensPerEth = 1` (learner must define this constant)
 - **Solidity version**: `0.8.20` (do **not** change)
 
 #### Custom Errors (learner must define)
@@ -131,13 +129,13 @@ yarn vercel --prod  # Redeploy to production URL
 ### Key Concept: ERC-20 Approve Pattern
 
 Selling tokens back to the Vendor requires **two** transactions from the user:
-1. `yourToken.approve(vendorAddress, amount)` - grants the Vendor permission to spend tokens
-2. `vendor.sellTokens(amount)` - Vendor calls `yourToken.transferFrom(msg.sender, address(this), amount)`
+1. `lumen.approve(vendorAddress, amount)` - grants the Vendor permission to spend tokens
+2. `vendor.sellTokens(amount)` - Vendor calls `lumen.transferFrom(msg.sender, address(this), amount)`
 
 ## Deploy Scripts
 
-- **`DeployYourToken.s.sol`** - Deploys both `YourToken` and `Vendor`. Contains commented-out lines for transferring 1000 tokens to the Vendor and transferring ownership — uncomment when ready for Checkpoint 2.
-- **`Deploy.s.sol`** - Main entry point that calls `DeployYourToken`.
+- **`DeployLumen.s.sol`** - Deploys both `Lumen` and `Vendor`. Contains commented-out lines for transferring 1000 tokens to the Vendor and transferring ownership — uncomment when ready for Checkpoint 2.
+- **`Deploy.s.sol`** - Main entry point that calls `DeployLumen`.
 
 ## Frontend Architecture
 
@@ -186,12 +184,12 @@ Use **DaisyUI** classes for components (cards, buttons, badges, tables). The pro
 
 The grading tests (`packages/foundry/test/Vendor.t.sol`) are organized into four checkpoints:
 
-- **Checkpoint 1**: `YourToken` mints exactly 1000 tokens to the deployer
+- **Checkpoint 1**: `Lumen` mints exactly 1000 tokens to the deployer
 - **Checkpoint 2**: `buyTokens` works correctly: sends ETH, receives tokens, emits `BuyTokens`
 - **Checkpoint 3**: `withdraw` is `onlyOwner`: non-owner reverts, owner receives ETH
 - **Checkpoint 4**: `sellTokens` works: approve + sell flow, emits `SellTokens`, handles errors
 
-Run with `yarn test` for all or `yarn test --match-test "CheckpointN"` for specific checkpoints. These same tests are used by the Speedrun Ethereum autograder.
+Run with `yarn test` for all or `yarn test --match-test "CheckpointN"` for specific checkpoints.
 
 ## Deployment Checklist (Testnet)
 
@@ -220,20 +218,3 @@ Run with `yarn test` for all or `yarn test --match-test "CheckpointN"` for speci
 - Integer division truncation: use `amount / tokensPerEth` (not the other way around) when computing ETH from tokens
 - Use `transfer` for `buyTokens` (Vendor sends its own tokens) but `transferFrom` for `sellTokens` (Vendor pulls user's tokens)
 - Prefer `call` over `transfer` for sending ETH (avoids gas limit issues)
-
-# Speedrun Ethereum AI-Guided mode
-
-This project has an interactive AI learning mode for blockchain development.
-
-## Quick Start
-Run `/start` to begin. The AI will guide you through building a smart contract interactively.
-
-## Commands
-- `/start` — Begin or resume the challenge
-- `/skip` — Skip current coding task (AI writes + explains solution)
-- `hint` — Get help anytime
-- `check` — Validate your code (code-writing challenges)
-
-## Key Files
-- `extension/.ai/CHALLENGE.yaml` — Challenge definition
-- `.challenge-ai/progress.json` — Your progress (auto-generated)

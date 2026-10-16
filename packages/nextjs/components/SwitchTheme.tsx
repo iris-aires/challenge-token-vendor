@@ -25,19 +25,14 @@ export const SwitchTheme = ({ className }: { className?: string }) => {
   if (!mounted) return null;
 
   return (
-    <div className={`flex space-x-2 h-8 items-center justify-center text-sm ${className}`}>
-      {/* [--depth:0] removes DaisyUI's glossy top highlight so the indicator is a single flat color */}
-      <input
-        id="theme-toggle"
-        type="checkbox"
-        className="toggle bg-secondary toggle-primary hover:bg-accent transition-all [--depth:0]"
-        onChange={handleToggle}
-        checked={isDarkMode}
-      />
-      <label htmlFor="theme-toggle" className={`swap swap-rotate ${!isDarkMode ? "swap-active" : ""}`}>
-        <SunIcon className="swap-on h-5 w-5" />
-        <MoonIcon className="swap-off h-5 w-5" />
-      </label>
-    </div>
+    <button
+      type="button"
+      className={`theme-switch btn btn-ghost btn-square ${className ?? ""}`}
+      onClick={handleToggle}
+      aria-label={isDarkMode ? "Switch to light theme" : "Switch to dark theme"}
+      title={isDarkMode ? "Switch to light theme" : "Switch to dark theme"}
+    >
+      {isDarkMode ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
+    </button>
   );
 };

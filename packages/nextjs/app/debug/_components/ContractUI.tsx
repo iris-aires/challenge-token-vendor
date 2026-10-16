@@ -1,6 +1,7 @@
 "use client";
 
 // @refresh reset
+import { LumenContractDetails } from "./LumenContractDetails";
 import { Contract } from "@scaffold-ui/debug-contracts";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
@@ -34,5 +35,12 @@ export const ContractUI = ({ contractName }: ContractUIProps) => {
     );
   }
 
-  return <Contract contractName={contractName as string} contract={deployedContractData} chainId={targetNetwork.id} />;
+  const contract = (
+    <Contract contractName={contractName as string} contract={deployedContractData} chainId={targetNetwork.id} />
+  );
+  return contractName === "Lumen" ? (
+    <LumenContractDetails address={deployedContractData.address}>{contract}</LumenContractDetails>
+  ) : (
+    contract
+  );
 };
